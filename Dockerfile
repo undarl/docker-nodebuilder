@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
 	ca-certificates \
 	curl \
 	git \
+	libfontconfig \
 	libssl-dev \
 	python \
 	rsync \
@@ -24,15 +25,17 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
 
 # nvm environment variables
 ENV NVM_DIR /usr/local/nvm
-ENV NODE_VER_1 ????
-ENV NODE_VER_2 ????
+ENV NODE_VER_1 0.12
+ENV NODE_VER_2 6.10
 
 # Install nvm and node
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash \
     && source $NVM_DIR/nvm.sh \
     && nvm install $NODE_VER_1 \
     && nvm install $NODE_VER_2 \
-    && nvm alias default $NODE_VER_1
-    && nvm use default
+    && nvm alias default $NODE_VER_1 \
+    && nvm use $NODE_VER_2
 
+# Install Yarn
+# RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
