@@ -8,8 +8,11 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 # Set non-interactive debconf
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
-# Install required system packages
-RUN apt-get update && apt-get install -y -q --no-install-recommends \
+# Update system packages
+RUN apt-get update && apt-get upgrade -y -q --no-install-recommends
+
+# Install additional required system packages
+RUN apt-get install -y -q --no-install-recommends \
 	apt-transport-https \
 	build-essential \
 	ca-certificates \
@@ -21,6 +24,13 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
 	rsync \
 	software-properties-common \
 	wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Setup Yarn repo
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN apt-get update && apt-get install -y -q --no-install-recommends \
+	yarn \
     && rm -rf /var/lib/apt/lists/*
 
 # nvm environment variables
