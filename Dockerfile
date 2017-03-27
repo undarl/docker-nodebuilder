@@ -23,8 +23,7 @@ RUN apt-get install -y -q --no-install-recommends \
 	python \
 	rsync \
 	software-properties-common \
-	wget \
-    && rm -rf /var/lib/apt/lists/*
+	wget
 
 # Setup Yarn repo
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -38,7 +37,7 @@ ENV NVM_DIR /usr/local/nvm
 ENV NODE_VER_1 0.12
 ENV NODE_VER_2 6.10
 
-# Install nvm and node
+# Install nvm and desired node versions
 RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | bash \
     && source $NVM_DIR/nvm.sh \
     && nvm install $NODE_VER_1 \
@@ -46,6 +45,4 @@ RUN curl https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh | b
     && nvm alias default $NODE_VER_1 \
     && nvm use $NODE_VER_2
 
-# Install Yarn
-# RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
